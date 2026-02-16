@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตะกร้าสินค้า - ShopHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.8rem;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand i {
+            font-size: 2rem;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        /* ===== CART HEADER ===== */
+        .cart-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .cart-header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .cart-header i {
+            font-size: 3rem;
+        }
+
+        .cart-header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .cart-container {
+            padding: 30px 0;
+            min-height: 600px;
+        }
+
+        /* ===== CART ITEMS SECTION ===== */
+        .cart-items-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .cart-items-section h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-items-section h2 i {
+            color: #667eea;
+        }
+
+        /* ===== CART ITEM CARD ===== */
+        .cart-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .cart-item-image {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .cart-item-id {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f5f5f5;
+            padding: 8px 12px;
+            border-radius: 8px;
+            width: fit-content;
+            margin: 10px 0;
+        }
+
+        .qty-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .qty-btn:hover {
+            background: #764ba2;
+            transform: scale(1.1);
+        }
+
+        .qty-input {
+            width: 50px;
+            text-align: center;
+            border: none;
+            background: white;
+            font-weight: 600;
+        }
+
+        .qty-input:focus {
+            outline: none;
+        }
+
+        .cart-item-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+            min-width: 100px;
+            text-align: right;
+        }
+
+        .btn-remove {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-remove:hover {
+            background-color: #ff5252;
+            transform: scale(1.05);
+        }
+
+        /* ===== EMPTY CART ===== */
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-cart i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-cart p {
+            color: #999;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* ===== CART SUMMARY ===== */
+        .cart-summary-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            max-width: 400px;
+            margin-left: auto;
+        }
+
+        .cart-summary-section h3 {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-summary-section h3 i {
+            color: #667eea;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .summary-row span:last-child {
+            font-weight: 600;
+        }
+
+        .summary-divider {
+            border-top: 2px solid #e0e0e0;
+            margin: 20px 0;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-checkout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+            color: white;
+        }
+
+        .btn-continue {
+            width: 100%;
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #e0e0e0;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-continue:hover {
+            background: #e0e0e0;
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(135deg, #2d3436 0%, #1a1a1a 100%);
+            color: white;
+            padding: 50px 0 0;
+            margin-top: 80px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 25px 0;
+            color: rgba(255, 255, 255, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .cart-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .cart-item-image {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+
+            .cart-item-total {
+                text-align: center;
+                margin: 10px 0;
+            }
+
+            .cart-summary-section {
+                max-width: 100%;
+                margin-left: 0;
+                margin-top: 30px;
+            }
+
+            .cart-items-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-shopping-bag"></i>
+                ShopHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">หน้าแรก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}#products">สินค้า</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                            <i class="fas fa-lock"></i>
+                            Admin
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== CART HEADER ===== -->
+    <div class="cart-header">
+        <h1>
+            <i class="fas fa-shopping-cart"></i>
+            ตะกร้าสินค้า
+        </h1>
+        <p>ตรวจสอบและชำระเงินสำหรับสินค้าของคุณ</p>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="container cart-container">
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                <div class="cart-items-section">
+                    <h2>
+                        <i class="fas fa-list"></i>
+                        รายการสินค้า
+                    </h2>
+
+                    <!-- Sample Cart Items (For Demo) -->
+                    <div id="cartItems">
+                        <!-- Cart items will be loaded here -->
+                        <div class="empty-cart">
+                            <i class="fas fa-inbox"></i>
+                            <p>ตะกร้าของคุณว่างเปล่า</p>
+                            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                                <i class="fas fa-shopping-bag me-2"></i>
+                                ไปช้อปสินค้า
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="col-lg-4">
+                <div class="cart-summary-section">
+                    <h3>
+                        <i class="fas fa-receipt"></i>
+                        สรุปการสั่งซื้อ
+                    </h3>
+
+                    <div class="summary-row">
+                        <span>ราคารวม:</span>
+                        <span id="subtotal">฿0.00</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>ค่าจัดส่ง:</span>
+                        <span id="shipping">฿50.00</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>ภาษีมูลค่าเพิ่ม (7%):</span>
+                        <span id="tax">฿0.00</span>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-total">
+                        <span>รวมทั้งสิ้น:</span>
+                        <span id="total">฿50.00</span>
+                    </div>
+
+                    <button class="btn-checkout">
+                        <i class="fas fa-credit-card"></i>
+                        ชำระเงิน
+                    </button>
+
+                    <a href="{{ url_for('index') }}" class="btn-continue">
+                        <i class="fas fa-arrow-left"></i>
+                        ช้อปสินค้าต่อ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 ShopHub. สงวนลิขสิทธิ์ทุกประการ.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Sample cart data (replace with actual data from server)
+        const sampleCart = [
+            { id: 1, name: 'สินค้า A', price: 790.00, quantity: 1, image_url: '' },
+            { id: 2, name: 'สินค้า B', price: 1290.00, quantity: 1, image_url: '' }
+        ];
+
+        function renderCart() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            
+            if (sampleCart.length === 0) {
+                cartItemsDiv.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-inbox"></i>
+                        <p>ตะกร้าของคุณว่างเปล่า</p>
+                        <a href="{{ url_for('index') }}" class="btn btn-primary">
+                            <i class="fas fa-shopping-bag me-2"></i>
+                            ไปช้อปสินค้า
+                        </a>
+                    </div>
+                `;
+                updateSummary();
+                return;
+            }
+
+            let html = '';
+            sampleCart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}">` : '<i class="fas fa-box"></i>'}
+                        </div>
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-id">รหัส: #${item.id}</div>
+                            <div class="cart-item-price">฿${item.price.toFixed(2)}</div>
+                            <div class="cart-item-quantity">
+                                <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">−</button>
+                                <input type="number" class="qty-input" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, 0, this.value)">
+                                <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="cart-item-total">฿${subtotal.toFixed(2)}</div>
+                        <button class="btn-remove" onclick="removeItem(${item.id})">
+                            <i class="fas fa-trash"></i>
+                            ลบ
+                        </button>
+                    </div>
+                `;
+            });
+
+            cartItemsDiv.innerHTML = html;
+            updateSummary();
+        }
+
+        function updateQuantity(id, change, newValue) {
+            const item = sampleCart.find(i => i.id === id);
+            if (item) {
+                if (newValue !== undefined) {
+                    item.quantity = parseInt(newValue) || 1;
+                } else {
+                    item.quantity += change;
+                    if (item.quantity < 1) item.quantity = 1;
+                }
+                renderCart();
+            }
+        }
+
+        function removeItem(id) {
+            const index = sampleCart.findIndex(i => i.id === id);
+            if (index > -1) {
+                sampleCart.splice(index, 1);
+                renderCart();
+            }
+        }
+
+        function updateSummary() {
+            const subtotal = sampleCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shipping = subtotal > 0 ? 50 : 0;
+            const tax = subtotal * 0.07;
+            const total = subtotal + shipping + tax;
+
+            document.getElementById('subtotal').textContent = `฿${subtotal.toFixed(2)}`;
+            document.getElementById('shipping').textContent = `฿${shipping.toFixed(2)}`;
+            document.getElementById('tax').textContent = `฿${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `฿${total.toFixed(2)}`;
+        }
+
+        // Initial render
+        renderCart();
+    </script>
+</body>
+</html>

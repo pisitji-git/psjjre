@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#7a4f3a"/>
+      <stop offset="1" stop-color="#4b2e2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#g1)"/>
+  <g fill="#f5efe6" font-family="Playfair Display, serif" font-size="48">
+    <text x="50" y="220">Coffee Blend</text>
+  </g>
+  <g fill="#f5efe6" opacity="0.15">
+    <circle cx="700" cy="80" r="80"/>
+  </g>
+</svg>
