@@ -20,15 +20,15 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a1428 0%, #1a3a52 100%);
-            color: white;
+            background: #f9fafb;
+            color: #1f2937;
             min-height: 100vh;
         }
 
         /* ===== NAVBAR ===== */
         .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: #2563eb !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-brand {
@@ -45,20 +45,21 @@
         }
 
         .nav-link {
-            color: rgba(255, 255, 255, 0.9) !important;
+            color: rgba(255, 255, 255, 0.95) !important;
             font-weight: 500;
-            margin: 0 10px;
-            transition: all 0.3s ease;
+            margin: 0 8px;
+            transition: all 0.2s ease;
         }
 
         .nav-link:hover {
             color: white !important;
-            transform: translateY(-2px);
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
         }
 
         /* ===== CHECKOUT HEADER ===== */
         .checkout-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
             color: white;
             padding: 40px 0;
             margin-bottom: 40px;
@@ -139,8 +140,8 @@
         }
 
         .step.active .step-circle {
-            background: #667eea;
-            border-color: #667eea;
+            background: #2563eb;
+            border-color: #2563eb;
             color: white;
         }
 
@@ -180,17 +181,17 @@
         .section-card h2 {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #333;
+            color: #1f2937;
             margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 2px solid #2563eb;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .section-card h2 i {
-            color: #667eea;
+            color: #2563eb;
         }
 
         /* ===== FORM STYLES ===== */
@@ -213,8 +214,9 @@
         }
 
         .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            color: #1f2937;
         }
 
         .form-row {
@@ -251,15 +253,15 @@
         }
 
         .payment-option input:checked + .payment-option-card {
-            border-color: #667eea;
-            background: #f0f3ff;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            border-color: #2563eb;
+            background: #dbeafe;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
         }
 
         .payment-option-icon {
             font-size: 2.5rem;
             margin-bottom: 15px;
-            color: #667eea;
+            color: #2563eb;
             display: block;
         }
 
@@ -287,17 +289,17 @@
         .order-summary h3 {
             font-size: 1.3rem;
             font-weight: bold;
-            color: #333;
+            color: #1f2937;
             margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 2px solid #2563eb;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .order-summary h3 i {
-            color: #667eea;
+            color: #2563eb;
         }
 
         .summary-item {
@@ -350,14 +352,14 @@
             align-items: center;
             font-size: 1.3rem;
             font-weight: bold;
-            color: #667eea;
+            color: #1f2937;
             padding: 15px 0;
         }
 
         /* ===== BUTTONS ===== */
         .btn-place-order {
             width: 100%;
-            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            background: #10b981;
             color: white;
             border: none;
             padding: 15px;
@@ -365,17 +367,19 @@
             font-weight: 600;
             font-size: 1.05rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             margin-top: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
         }
 
         .btn-place-order:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+            background: #059669;
             color: white;
         }
 
@@ -387,14 +391,14 @@
 
         .btn-back {
             width: 100%;
-            background: #f0f0f0;
-            color: #333;
-            border: 2px solid #e0e0e0;
+            background: transparent;
+            color: #2563eb;
+            border: 2px solid #2563eb;
             padding: 12px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             margin-top: 10px;
             text-decoration: none;
             display: flex;
@@ -404,14 +408,14 @@
         }
 
         .btn-back:hover {
-            background: #e0e0e0;
-            border-color: #667eea;
-            color: #667eea;
+            background: rgba(37, 99, 235, 0.08);
+            border-color: #1d4ed8;
+            color: #1d4ed8;
         }
 
         /* ===== FOOTER ===== */
         footer {
-            background: linear-gradient(135deg, #2d3436 0%, #1a1a1a 100%);
+            background: #1f2937;
             color: white;
             padding: 50px 0 0;
             margin-top: 80px;
@@ -460,7 +464,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('index') }}">
                 <i class="fas fa-shopping-bag"></i>
-                ShopHub
+                JaiShopHub
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
