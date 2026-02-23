@@ -99,6 +99,11 @@ def payment_methods():
     return render_template('payment_methods.html')
 
 
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
+
 @app.route('/checkout')
 def checkout():
     return render_template('checkout.html')
@@ -121,6 +126,114 @@ def seed_route():
     if created:
         return jsonify({'status': 'seeded', 'message': 'Inserted sample products'})
     return jsonify({'status': 'skipped', 'message': 'Products already exist'})
+
+
+# ===== CART API ENDPOINTS =====
+@app.route('/api/cart/add', methods=['POST'])
+def api_add_to_cart():
+    """Add item to cart via API"""
+    try:
+        data = request.get_json()
+        product_id = data.get('product_id')
+        product_name = data.get('product_name')
+        product_price = data.get('product_price')
+        product_image = data.get('product_image', '')
+        
+        # Initialize cart in session
+        if 'cart' not in session:
+            session['cart'] = []
+        
+        cart = session['cart']
+        
+        # Check if product already in cart
+        existing = next((item for item in cart if item['id'] == product_id), None)
+        
+        if existing:
+            existing['quantity'] += 1
+            message = f"เพิ่มเติม {product_name} (จำนวน: {existing['quantity']})"
+        else:
+            cart.append({
+                'id': product_id,
+                'name': product_name,
+                'price': float(product_price),
+                'image_url': product_image,
+                'quantity': 1
+            })
+            message = f"เพิ่ม {product_name} ลงตะกร้าสำเร็จ!"
+        
+        session.modified = True
+        return jsonify({'status': 'success', 'message': message, 'cart_count': len(cart)})
+    except Exception as e:
+        print(f"Error in api_add_to_cart: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 400
+
+
+@app.route('/api/cart/get', methods=['GET'])
+def api_get_cart():
+    """Get cart items"""
+    cart = session.get('cart', [])
+    return jsonify(cart)
+
+
+@app.route('/api/cart/remove', methods=['POST'])
+def api_remove_from_cart():
+    """Remove item from cart"""
+    try:
+        data = request.get_json()
+        product_id = data.get('product_id')
+        
+        if 'cart' not in session:
+            session['cart'] = []
+        
+        cart = session['cart']
+        item = next((i for i in cart if i['id'] == product_id), None)
+        
+        if item:
+            cart.remove(item)
+            session.modified = True
+            return jsonify({'status': 'success', 'message': f"ลบ {item['name']} ออกจากตะกร้า"})
+        
+        return jsonify({'status': 'error', 'message': 'Item not found'}), 404
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 400
+
+
+@app.route('/api/cart/update', methods=['POST'])
+def api_update_cart():
+    """Update item quantity in cart"""
+    try:
+        data = request.get_json()
+        product_id = data.get('product_id')
+        quantity = int(data.get('quantity', 1))
+        
+        if 'cart' not in session:
+            session['cart'] = []
+        
+        cart = session['cart']
+        item = next((i for i in cart if i['id'] == product_id), None)
+        
+        if item:
+            if quantity <= 0:
+                cart.remove(item)
+                message = f"ลบ {item['name']} ออกจากตะกร้า"
+            else:
+                item['quantity'] = quantity
+                message = f"อัพเดต {item['name']} - จำนวน: {quantity}"
+            
+            session.modified = True
+            return jsonify({'status': 'success', 'message': message})
+        
+        return jsonify({'status': 'error', 'message': 'Item not found'}), 404
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 400
+
+
+@app.route('/api/cart/clear', methods=['POST'])
+def api_clear_cart():
+    """Clear entire cart"""
+    session.pop('cart', None)
+    session.modified = True
+    return jsonify({'status': 'success', 'message': 'ตะกร้าว่างเปล่าแล้ว'})
 
 
 # --- Simple admin / backend routes ---

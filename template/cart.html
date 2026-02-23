@@ -375,6 +375,53 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* ===== CART BADGE ===== */
+        .cart-badge {
+            background-color: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            margin-left: -8px;
+            display: inline-block;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .cart-header h1 {
@@ -441,6 +488,13 @@
                         <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
                             <i class="fas fa-lock"></i>
                             Admin
+                        </a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <a class="nav-link" href="{{ url_for('cart') }}">
+                            <i class="fas fa-shopping-cart"></i>
+                            ตะกร้า
+                            <span class="cart-badge">0</span>
                         </a>
                     </li>
                 </ul>
@@ -540,21 +594,30 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Get cart from localStorage
-        function getCart() {
-            const cart = localStorage.getItem('shophub_cart');
-            return cart ? JSON.parse(cart) : [];
-        }
+        let cart = [];
 
-        // Save cart to localStorage
-        function saveCart(cart) {
-            localStorage.setItem('shophub_cart', JSON.stringify(cart));
+        // Load cart from server on page load
+        function loadCart() {
+            fetch('/api/cart/get')
+                .then(response => response.json())
+                .then(data => {
+                    cart = data;
+                    console.log('Cart loaded from server:', cart);
+                    renderCart();
+                })
+                .catch(error => {
+                    console.error('Error loading cart:', error);
+                    renderCart(); // Show empty cart on error
+                });
         }
-
-        let cart = getCart();
 
         function renderCart() {
             const cartItemsDiv = document.getElementById('cartItems');
+            
+            if (!cartItemsDiv) {
+                console.error('Error: cartItems element not found!');
+                return;
+            }
             
             if (cart.length === 0) {
                 cartItemsDiv.innerHTML = `
@@ -568,6 +631,7 @@
                     </div>
                 `;
                 updateSummary();
+                updateCartBadge();
                 return;
             }
 
@@ -604,6 +668,7 @@
 
             cartItemsDiv.innerHTML = html;
             updateSummary();
+            updateCartBadge();
         }
 
         function updateQuantity(id, change, newValue) {
@@ -611,18 +676,38 @@
             const numericId = Number(id);
             const item = cart.find(i => Number(i.id) === numericId);
             if (item) {
+                let newQuantity;
                 if (newValue !== undefined) {
-                    const parsedValue = parseInt(newValue, 10) || 1;
-                    item.quantity = parsedValue < 1 ? 1 : parsedValue;
+                    newQuantity = parseInt(newValue, 10) || 1;
                 } else {
-                    // Coerce to number before adding to avoid string concatenation
-                    const currentQty = Number(item.quantity) || 0;
-                    const updated = currentQty + Number(change || 0);
-                    item.quantity = updated < 1 ? 1 : updated;
+                    newQuantity = Number(item.quantity) + Number(change || 0);
                 }
-                saveCart(cart);
-                renderCart();
-                showCartNotification(`อัพเดต ${item.name} - จำนวน: ${item.quantity}`);
+                newQuantity = newQuantity < 1 ? 1 : newQuantity;
+                
+                // Update on server
+                fetch('/api/cart/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        product_id: numericId,
+                        quantity: newQuantity
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        loadCart();
+                        showCartNotification(data.message);
+                    } else {
+                        showCartNotification('เกิดข้อผิดพลาด');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating quantity:', error);
+                    showCartNotification('เกิดข้อผิดพลาด');
+                });
             }
         }
 
@@ -631,13 +716,28 @@
             const numericId = Number(id);
             const item = cart.find(i => Number(i.id) === numericId);
             if (item && confirm(`คุณต้องการลบ ${item.name} ออกจากตะกร้าหรือไม่?`)) {
-                const index = cart.findIndex(i => Number(i.id) === numericId);
-                if (index > -1) {
-                    const removedItem = cart.splice(index, 1)[0];
-                    saveCart(cart);
-                    renderCart();
-                    showCartNotification(`ลบ ${removedItem.name} ออกจากตะกร้าแล้ว`);
-                }
+                fetch('/api/cart/remove', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        product_id: numericId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        loadCart();
+                        showCartNotification(data.message);
+                    } else {
+                        showCartNotification('เกิดข้อผิดพลาด');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error removing item:', error);
+                    showCartNotification('เกิดข้อผิดพลาด');
+                });
             }
         }
 
@@ -714,9 +814,12 @@
             }
         }
 
-        // Initial render
-        renderCart();
-        updateCustomerNav();
+        // Initial render when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded: Loading cart from server');
+            loadCart();
+            updateCustomerNav();
+        });
     </script>
 </body>
 </html>

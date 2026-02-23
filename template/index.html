@@ -305,6 +305,40 @@
             margin: 0;
         }
 
+        /* ===== ANIMATIONS ===== */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .banner h1 {
@@ -495,74 +529,78 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Get cart from localStorage
-        function getCart() {
-            const cart = localStorage.getItem('shophub_cart');
-            return cart ? JSON.parse(cart) : [];
-        }
-
-        // Save cart to localStorage
-        function saveCart(cart) {
-            localStorage.setItem('shophub_cart', JSON.stringify(cart));
-        }
-
-        // Update cart badge
-        function updateCartBadge() {
-            const cart = getCart();
-            const totalItems = cart.reduce((sum, item) => sum + Number(item.quantity), 0);
-            const badge = document.querySelector('.cart-badge');
-            if (badge) {
-                badge.textContent = totalItems;
-            }
-        }
-
-        // Add item to cart
+        // Add item to cart via API
         function addToCart(productId, productName, productPrice, productImageUrl) {
+            console.log('addToCart called:', {productId, productName, productPrice, productImageUrl});
+            
             // Validate product ID
             if (!productId || isNaN(productId)) {
                 console.error('Invalid product ID:', productId);
-                showNotification('เกิดข้อผิดพลาด: ไม่สามารถเพิ่มสินค้า');
-                return;
+                showNotification('เกิดข้อผิดพลาด: ไม่สามารถเพิ่มสินค้า', 'error');
+                return false;
             }
             
-            let cart = getCart();
+            // Send to server API
+            fetch('/api/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    product_id: parseInt(productId),
+                    product_name: productName,
+                    product_price: parseFloat(productPrice),
+                    product_image: productImageUrl || ''
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('API response:', data);
+                if (data.status === 'success') {
+                    showNotification(data.message, 'success');
+                    updateCartBadge();
+                } else {
+                    showNotification(data.message || 'เกิดข้อผิดพลาด', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('API error:', error);
+                showNotification('เกิดข้อผิดพลาดในการติดต่อเซิร์ฟเวอร์', 'error');
+            });
             
-            // Normalize ID and price to ensure consistent types
-            const numericId = Number(productId);
-            const numericPrice = Number(productPrice);
-            
-            // Check if product already exists in cart (flexible comparison)
-            const existingItem = cart.find(item => Number(item.id) === numericId);
-            
-            if (existingItem) {
-                // Ensure numeric addition (avoid string concatenation)
-                existingItem.quantity = (Number(existingItem.quantity) || 0) + 1;
-                showNotification(`เพิ่มเติม ${productName} (จำนวน: ${existingItem.quantity})`);
-            } else {
-                cart.push({
-                    id: numericId,
-                    name: productName,
-                    price: numericPrice,
-                    image_url: productImageUrl || '',
-                    quantity: 1
-                });
-                showNotification(`เพิ่ม ${productName} ลงตะกร้าสำเร็จ!`);
-            }
-            
-            saveCart(cart);
-            updateCartBadge();
+            return true;
+        }
+
+        // Update cart badge from server
+        function updateCartBadge() {
+            fetch('/api/cart/get')
+                .then(response => response.json())
+                .then(cart => {
+                    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                    const badge = document.querySelector('.cart-badge');
+                    if (badge) {
+                        badge.textContent = totalItems;
+                        console.log('Badge updated:', totalItems);
+                    }
+                })
+                .catch(error => console.error('Error updating badge:', error));
         }
 
         // Show notification
-        function showNotification(message) {
+        function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
             notification.className = 'cart-notification';
             notification.textContent = message;
+            
+            const bgColor = type === 'success' 
+                ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                : 'linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%)';
+            
             notification.style.cssText = `
                 position: fixed;
                 top: 100px;
                 right: 20px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: ${bgColor};
                 color: white;
                 padding: 15px 25px;
                 border-radius: 8px;
@@ -581,8 +619,16 @@
 
         // Initialize: Attach click handlers to all "Add to cart" buttons
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded: Initializing cart system');
             const addToCartButtons = document.querySelectorAll('.btn-add-cart');
-            addToCartButtons.forEach((button) => {
+            console.log('Found add-to-cart buttons:', addToCartButtons.length);
+            
+            if (addToCartButtons.length === 0) {
+                console.warn('WARNING: No add-to-cart buttons found!');
+            }
+            
+            addToCartButtons.forEach((button, index) => {
+                console.log(`Attaching click handler to button ${index}`);
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     
@@ -592,11 +638,13 @@
                     const productPrice = parseFloat(this.getAttribute('data-product-price'));
                     const productImageUrl = this.getAttribute('data-product-image');
                     
+                    console.log('Button clicked:', {productId, productName, productPrice, productImageUrl});
                     addToCart(productId, productName, productPrice, productImageUrl);
                 });
             });
             
             // Update cart badge on page load
+            console.log('Updating badge on page load');
             updateCartBadge();
 
             // Update customer navigation

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test localStorage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .test-box {
+            background: #f0f0f0;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+        .success {
+            border-left-color: green;
+            color: green;
+        }
+        .error {
+            border-left-color: red;
+            color: red;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <h1>📝 Test localStorage & Cart System</h1>
+    
+    <div class="test-box">
+        <h3>localStorage Status</h3>
+        <p id="storageStatus">Checking...</p>
+    </div>
+
+    <div class="test-box">
+        <h3>Current Cart Data</h3>
+        <p id="cartData" style="word-break: break-all;">Loading...</p>
+    </div>
+
+    <div class="test-box">
+        <h3>Test Actions</h3>
+        <button onclick="addTestProduct()">Add Test Product</button>
+        <button onclick="showCart()">Show Cart</button>
+        <button onclick="clearCart()">Clear Cart</button>
+        <button onclick="location.href='/'">Go to Index</button>
+        <button onclick="location.href='/cart'">Go to Cart</button>
+    </div>
+
+    <script>
+        // Check localStorage support
+        function checkLocalStorage() {
+            const status = document.getElementById('storageStatus');
+            try {
+                const test = '__test__';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                status.innerHTML = '✓ localStorage is supported';
+                status.parentElement.className = 'test-box success';
+            } catch (e) {
+                status.innerHTML = '✗ localStorage is NOT supported: ' + e.message;
+                status.parentElement.className = 'test-box error';
+            }
+        }
+
+        // Show current cart
+        function showCart() {
+            const cart = localStorage.getItem('shophub_cart');
+            const cartData = document.getElementById('cartData');
+            if (cart) {
+                try {
+                    const parsed = JSON.parse(cart);
+                    cartData.innerHTML = '<strong>Items: ' + parsed.length + '</strong><br><pre>' + JSON.stringify(parsed, null, 2) + '</pre>';
+                } catch (e) {
+                    cartData.innerHTML = 'Error parsing cart: ' + e.message;
+                }
+            } else {
+                cartData.innerHTML = 'Cart is empty (no data in localStorage)';
+            }
+        }
+
+        // Add test product
+        function addTestProduct() {
+            const cart = JSON.parse(localStorage.getItem('shophub_cart') || '[]');
+            const testProduct = {
+                id: Date.now(),
+                name: 'Test Product ' + new Date().toLocaleTimeString(),
+                price: 1000,
+                image_url: '',
+                quantity: 1
+            };
+            cart.push(testProduct);
+            localStorage.setItem('shophub_cart', JSON.stringify(cart));
+            alert('Added test product! Total items: ' + cart.length);
+            showCart();
+        }
+
+        // Clear cart
+        function clearCart() {
+            localStorage.removeItem('shophub_cart');
+            alert('Cart cleared!');
+            showCart();
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            checkLocalStorage();
+            showCart();
+        });
+    </script>
+</body>
+</html>
