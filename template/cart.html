@@ -324,12 +324,14 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            text-decoration: none;
         }
 
         .btn-checkout:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
             color: white;
+            text-decoration: none;
         }
 
         .btn-continue {
@@ -422,7 +424,16 @@
                         <a class="nav-link" href="{{ url_for('index') }}">หน้าแรก</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('payment_methods') }}">วิธีการชำระเงิน</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('index') }}#products">สินค้า</a>
+                    </li>
+                    <li class="nav-item ms-3" id="customerNav">
+                        <a class="nav-link" href="{{ url_for('customer_login') }}">
+                            <i class="fas fa-user"></i>
+                            เข้าสู่ระบบ
+                        </a>
                     </li>
                     <li class="nav-item ms-3">
                         <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
@@ -500,10 +511,10 @@
                         <span id="total">฿50.00</span>
                     </div>
 
-                    <button class="btn-checkout">
+                    <a href="{{ url_for('checkout') }}" class="btn-checkout" onclick="return checkCartNotEmpty()">
                         <i class="fas fa-credit-card"></i>
                         ชำระเงิน
-                    </button>
+                    </a>
 
                     <a href="{{ url_for('index') }}" class="btn-continue">
                         <i class="fas fa-arrow-left"></i>
@@ -527,16 +538,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Sample cart data (replace with actual data from server)
-        const sampleCart = [
-            { id: 1, name: 'สินค้า A', price: 790.00, quantity: 1, image_url: '' },
-            { id: 2, name: 'สินค้า B', price: 1290.00, quantity: 1, image_url: '' }
-        ];
+        // Get cart from localStorage
+        function getCart() {
+            const cart = localStorage.getItem('shophub_cart');
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        // Save cart to localStorage
+        function saveCart(cart) {
+            localStorage.setItem('shophub_cart', JSON.stringify(cart));
+        }
+
+        let cart = getCart();
 
         function renderCart() {
             const cartItemsDiv = document.getElementById('cartItems');
             
-            if (sampleCart.length === 0) {
+            if (cart.length === 0) {
                 cartItemsDiv.innerHTML = `
                     <div class="empty-cart">
                         <i class="fas fa-inbox"></i>
@@ -552,7 +570,7 @@
             }
 
             let html = '';
-            sampleCart.forEach(item => {
+            cart.forEach(item => {
                 const subtotal = item.price * item.quantity;
                 html += `
                     <div class="cart-item">
@@ -583,7 +601,7 @@
         }
 
         function updateQuantity(id, change, newValue) {
-            const item = sampleCart.find(i => i.id === id);
+            const item = cart.find(i => i.id === id);
             if (item) {
                 if (newValue !== undefined) {
                     item.quantity = parseInt(newValue) || 1;
@@ -591,20 +609,22 @@
                     item.quantity += change;
                     if (item.quantity < 1) item.quantity = 1;
                 }
+                saveCart(cart);
                 renderCart();
             }
         }
 
         function removeItem(id) {
-            const index = sampleCart.findIndex(i => i.id === id);
+            const index = cart.findIndex(i => i.id === id);
             if (index > -1) {
-                sampleCart.splice(index, 1);
+                cart.splice(index, 1);
+                saveCart(cart);
                 renderCart();
             }
         }
 
         function updateSummary() {
-            const subtotal = sampleCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const shipping = subtotal > 0 ? 50 : 0;
             const tax = subtotal * 0.07;
             const total = subtotal + shipping + tax;
@@ -615,8 +635,44 @@
             document.getElementById('total').textContent = `฿${total.toFixed(2)}`;
         }
 
+        // Check if cart is not empty before checkout
+        function checkCartNotEmpty() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert('กรุณาเพิ่มสินค้าลงในตะกร้าก่อน');
+                return false;
+            }
+            return true;
+        }
+
+        // Update customer navigation based on login status
+        function updateCustomerNav() {
+            const customerNav = document.getElementById('customerNav');
+            const loggedInCustomer = localStorage.getItem('shophub_logged_in_customer');
+            
+            if (customerNav && loggedInCustomer) {
+                const customer = JSON.parse(loggedInCustomer);
+                customerNav.innerHTML = `
+                    <a class="nav-link" href="#" onclick="logout(); return false;">
+                        <i class="fas fa-user"></i>
+                        ${customer.name.split(' ')[0]}
+                        <i class="fas fa-sign-out-alt ms-1"></i>
+                    </a>
+                `;
+            }
+        }
+
+        // Logout customer
+        function logout() {
+            if (confirm('คุณต้องการออกจากระบบหรือไม่?')) {
+                localStorage.removeItem('shophub_logged_in_customer');
+                window.location.reload();
+            }
+        }
+
         // Initial render
         renderCart();
+        updateCustomerNav();
     </script>
 </body>
 </html>

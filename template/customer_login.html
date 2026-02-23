@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ - ShopHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* ===== CONTAINER ===== */
+        .auth-container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        /* ===== LOGO ===== */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+        }
+
+        /* ===== CARD ===== */
+        .auth-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-card h2 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .auth-card h2 i {
+            color: #667eea;
+        }
+
+        /* ===== FORM ===== */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-label i {
+            color: #667eea;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #ccc;
+        }
+
+        /* ===== REMEMBER ME ===== */
+        .remember-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+
+        .remember-section a {
+            color: #667eea;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .remember-section a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .form-check {
+            margin: 0;
+        }
+
+        .form-check-input {
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: #667eea;
+            border-color: #667eea;
+        }
+
+        .form-check-label {
+            margin: 0;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== DIVIDER ===== */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            color: #ccc;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #e0e0e0;
+        }
+
+        .divider span {
+            margin: 0 10px;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* ===== SOCIAL LOGIN ===== */
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .social-btn {
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .social-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .social-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* ===== SIGNUP LINK ===== */
+        .signup-section {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .signup-section p {
+            color: #666;
+            margin: 0 0 10px 0;
+            font-size: 0.95rem;
+        }
+
+        .signup-section a {
+            color: #667eea;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .signup-section a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        /* ===== FORM TABS ===== */
+        .form-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .form-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #999;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .form-tab.active {
+            color: #667eea;
+        }
+
+        .form-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #667eea;
+        }
+
+        .form-tab:hover {
+            color: #667eea;
+        }
+
+        /* ===== FORM CONTENT ===== */
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ===== ERROR MESSAGE ===== */
+        .alert {
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: none;
+        }
+
+        .alert-danger {
+            background-color: #ffe8e8;
+            color: #d32f2f;
+        }
+
+        .alert-success {
+            background-color: #e8f5e9;
+            color: #1b5e20;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 30px 20px;
+            }
+
+            .auth-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .social-login {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo -->
+    <div class="auth-container">
+        <div class="logo-section">
+            <div class="logo">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="logo-text">ShopHub</span>
+            </div>
+            <p class="logo-subtitle">ร้านค้าออนไลน์ที่เชื่อถือได้</p>
+        </div>
+
+        <!-- Auth Card -->
+        <div class="auth-card">
+            <!-- Tabs -->
+            <div class="form-tabs">
+                <button class="form-tab active" onclick="switchTab('login')">
+                    <i class="fas fa-sign-in-alt me-2"></i>เข้าสู่ระบบ
+                </button>
+                <button class="form-tab" onclick="switchTab('register')">
+                    <i class="fas fa-user-plus me-2"></i>สมัครสมาชิก
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="form-content active" id="loginForm">
+                <h2>
+                    <i class="fas fa-lock"></i>
+                    เข้าสู่ระบบ
+                </h2>
+
+                <div id="loginError"></div>
+
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope"></i>
+                            อีเมลหรือชื่อผู้ใช้
+                        </label>
+                        <input type="text" class="form-control" id="loginEmail" placeholder="example@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-key"></i>
+                            รหัสผ่าน
+                        </label>
+                        <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="remember-section">
+                        <label class="form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <span class="form-check-label">จำรหัสผ่าน</span>
+                        </label>
+                        <a href="#">ลืมรหัสผ่าน?</a>
+                    </div>
+
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        เข้าสู่ระบบ
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>หรือเข้าด้วย</span>
+                </div>
+
+                <div class="social-login">
+                    <button class="social-btn" onclick="loginWithGoogle()">
+                        <i class="fab fa-google"></i>
+                        Google
+                    </button>
+                    <button class="social-btn" onclick="loginWithFacebook()">
+                        <i class="fab fa-facebook"></i>
+                        Facebook
+                    </button>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div class="form-content" id="registerForm">
+                <h2>
+                    <i class="fas fa-user-plus"></i>
+                    สมัครสมาชิก
+                </h2>
+
+                <div id="registerError"></div>
+                <div id="registerSuccess"></div>
+
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user"></i>
+                            ชื่อ
+                        </label>
+                        <input type="text" class="form-control" id="registerName" placeholder="ชื่อของคุณ" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope"></i>
+                            อีเมล
+                        </label>
+                        <input type="email" class="form-control" id="registerEmail" placeholder="example@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-key"></i>
+                            รหัสผ่าน
+                        </label>
+                        <input type="password" class="form-control" id="registerPassword" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-check"></i>
+                            ยืนยันรหัสผ่าน
+                        </label>
+                        <input type="password" class="form-control" id="registerPasswordConfirm" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-check">
+                            <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                            <span class="form-check-label">ฉันยอมรับเงื่อนไขการใช้งานและนโยบายความเป็นส่วนตัว</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-user-plus"></i>
+                        สมัครสมาชิก
+                    </button>
+                </form>
+
+                <div class="signup-section">
+                    <p>มีบัญชีแล้ว?</p>
+                    <button type="button" class="btn-link" onclick="switchTab('login')" style="background: none; border: none; padding: 0; cursor: pointer;">
+                        <a href="#" onclick="switchTab('login'); return false;">เข้าสู่ระบบที่นี่</a>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Existing Account Link -->
+            <div class="signup-section" id="loginSignup">
+                <p>ยังไม่มีบัญชี?</p>
+                <a href="#" onclick="switchTab('register'); return false;">สมัครสมาชิกทันที</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Switch between login and register tabs
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const loginTab = document.querySelectorAll('.form-tab')[0];
+            const registerTab = document.querySelectorAll('.form-tab')[1];
+            const loginSignup = document.getElementById('loginSignup');
+
+            if (tab === 'login') {
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginSignup.style.display = 'block';
+            } else {
+                loginForm.classList.remove('active');
+                registerForm.classList.add('active');
+                loginTab.classList.remove('active');
+                registerTab.classList.add('active');
+                loginSignup.style.display = 'none';
+            }
+
+            // Clear error messages
+            document.getElementById('loginError').innerHTML = '';
+            document.getElementById('registerError').innerHTML = '';
+            document.getElementById('registerSuccess').innerHTML = '';
+        }
+
+        // Get customers list from localStorage
+        function getCustomers() {
+            const customers = localStorage.getItem('shophub_customers');
+            return customers ? JSON.parse(customers) : [];
+        }
+
+        // Save customers to localStorage
+        function saveCustomers(customers) {
+            localStorage.setItem('shophub_customers', JSON.stringify(customers));
+        }
+
+        // Get current logged-in customer
+        function getLoggedInCustomer() {
+            const customer = localStorage.getItem('shophub_logged_in_customer');
+            return customer ? JSON.parse(customer) : null;
+        }
+
+        // Save logged-in customer
+        function saveLoggedInCustomer(customer) {
+            localStorage.setItem('shophub_logged_in_customer', JSON.stringify(customer));
+        }
+
+        // Handle login
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const errorDiv = document.getElementById('loginError');
+
+            errorDiv.innerHTML = '';
+
+            // Validate input
+            if (!email || !password) {
+                errorDiv.innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>กรุณากรอกอีเมลและรหัสผ่าน</div>';
+                return;
+            }
+
+            // Get customers
+            const customers = getCustomers();
+            const customer = customers.find(c => (c.email === email || c.username === email) && c.password === password);
+
+            if (customer) {
+                // Save logged-in customer
+                saveLoggedInCustomer({
+                    id: customer.id,
+                    name: customer.name,
+                    email: customer.email,
+                    username: customer.username,
+                    loginTime: new Date().toISOString()
+                });
+
+                if (rememberMe) {
+                    localStorage.setItem('shophub_remember_email', email);
+                }
+
+                errorDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>เข้าสู่ระบบสำเร็จ! กำลังเปลี่ยนหน้า...</div>';
+                
+                // Redirect to home page
+                setTimeout(() => {
+                    window.location.href = '{{ url_for("index") }}';
+                }, 1500);
+            } else {
+                errorDiv.innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>อีเมลหรือรหัสผ่านไม่ถูกต้อง</div>';
+            }
+        }
+
+        // Handle register
+        function handleRegister(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+
+            const errorDiv = document.getElementById('registerError');
+            const successDiv = document.getElementById('registerSuccess');
+
+            errorDiv.innerHTML = '';
+            successDiv.innerHTML = '';
+
+            // Validate inputs
+            if (!name || !email || !password || !passwordConfirm) {
+                errorDiv.innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>กรุณากรอกข้อมูลให้ครบถ้วน</div>';
+                return;
+            }
+
+            if (password !== passwordConfirm) {
+                errorDiv.innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>รหัสผ่านไม่ตรงกัน</div>';
+                return;
+            }
+
+            if (password.length < 6) {
+                errorDiv.innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร</div>';
+                return;
+            }
+
+            if (!agreeTerms) {
+                errorDiv.innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>กรุณายอมรับเงื่อนไขการใช้งาน</div>';
+                return;
+            }
+
+            // Check if email already exists
+            const customers = getCustomers();
+            if (customers.some(c => c.email === email)) {
+                errorDiv.innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i>อีเมลนี้ได้ลงทะเบียนแล้ว</div>';
+                return;
+            }
+
+            // Create username from email
+            const username = email.split('@')[0];
+
+            // Create new customer
+            const newCustomer = {
+                id: 'customer_' + Date.now(),
+                name,
+                email,
+                username,
+                password,
+                createdAt: new Date().toISOString()
+            };
+
+            // Add customer
+            customers.push(newCustomer);
+            saveCustomers(customers);
+
+            // Save logged-in customer
+            saveLoggedInCustomer({
+                id: newCustomer.id,
+                name: newCustomer.name,
+                email: newCustomer.email,
+                username: newCustomer.username,
+                loginTime: new Date().toISOString()
+            });
+
+            // Show success message
+            successDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>สมัครสมาชิกสำเร็จ! กำลังเปลี่ยนหน้า...</div>';
+            
+            // Redirect to home page
+            setTimeout(() => {
+                window.location.href = '{{ url_for("index") }}';
+            }, 1500);
+        }
+
+        // Social login (demo)
+        function loginWithGoogle() {
+            alert('Google Login: ฟีเจอร์นี้กำลังพัฒนา');
+        }
+
+        function loginWithFacebook() {
+            alert('Facebook Login: ฟีเจอร์นี้กำลังพัฒนา');
+        }
+
+        // Pre-fill email if remembered
+        document.addEventListener('DOMContentLoaded', function() {
+            const rememberedEmail = localStorage.getItem('shophub_remember_email');
+            if (rememberedEmail) {
+                document.getElementById('loginEmail').value = rememberedEmail;
+                document.getElementById('rememberMe').checked = true;
+            }
+        });
+    </script>
+</body>
+</html>

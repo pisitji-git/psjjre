@@ -56,9 +56,9 @@ def seed_db():
         if count == 0:
             samples = [
                 Product(name='Headset / สินค้า A', price=5000.00, image_url='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80'),
-                Product(name='สินค้า B', price=1290.00, image_url=''),
-                Product(name='สินค้า C', price=450.00, image_url=''),
-                Product(name='สินค้า D', price=1990.00, image_url=''),
+                Product(name='สินค้า B - Smart Watch', price=1290.00, image_url='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80'),
+                Product(name='สินค้า C - Keyboard', price=450.00, image_url='https://images.unsplash.com/photo-1587829191301-41e580d7b4f9?w=500&q=80'),
+                Product(name='สินค้า D - Phone', price=1990.00, image_url='https://images.unsplash.com/photo-1511707267537-b85faf00021e?w=500&q=80'),
             ]
             db.session.bulk_save_objects(samples)
             db.session.commit()
@@ -92,6 +92,27 @@ def index():
 @app.route('/cart')
 def cart():
     return render_template('cart.html')
+
+
+@app.route('/payment-methods')
+def payment_methods():
+    return render_template('payment_methods.html')
+
+
+@app.route('/checkout')
+def checkout():
+    return render_template('checkout.html')
+
+
+@app.route('/customer/login')
+def customer_login():
+    return render_template('customer_login.html')
+
+
+@app.route('/customer/logout')
+def customer_logout():
+    session.pop('customer', None)
+    return redirect(url_for('index'))
 
 
 @app.route('/seed', methods=['POST', 'GET'])
