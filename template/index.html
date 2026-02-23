@@ -535,7 +535,8 @@
             const existingItem = cart.find(item => Number(item.id) === numericId);
             
             if (existingItem) {
-                existingItem.quantity += 1;
+                // Ensure numeric addition (avoid string concatenation)
+                existingItem.quantity = (Number(existingItem.quantity) || 0) + 1;
                 showNotification(`เพิ่มเติม ${productName} (จำนวน: ${existingItem.quantity})`);
             } else {
                 cart.push({

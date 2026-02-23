@@ -612,15 +612,13 @@
             const item = cart.find(i => Number(i.id) === numericId);
             if (item) {
                 if (newValue !== undefined) {
-                    const parsedValue = parseInt(newValue) || 1;
-                    if (parsedValue < 1) {
-                        item.quantity = 1;
-                    } else {
-                        item.quantity = parsedValue;
-                    }
+                    const parsedValue = parseInt(newValue, 10) || 1;
+                    item.quantity = parsedValue < 1 ? 1 : parsedValue;
                 } else {
-                    item.quantity += change;
-                    if (item.quantity < 1) item.quantity = 1;
+                    // Coerce to number before adding to avoid string concatenation
+                    const currentQty = Number(item.quantity) || 0;
+                    const updated = currentQty + Number(change || 0);
+                    item.quantity = updated < 1 ? 1 : updated;
                 }
                 saveCart(cart);
                 renderCart();
