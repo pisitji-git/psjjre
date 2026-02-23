@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ชำระเงิน - ShopHub</title>
+    <title>ชำระเงิน - JaiShopHub</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
     
     <style>
         * {
@@ -732,7 +734,7 @@
     <footer>
         <div class="container">
             <div class="footer-bottom">
-                <p>&copy; 2026 ShopHub. สงวนลิขสิทธิ์ทุกประการ.</p>
+                <p>&copy; 2026 JaiShopHub. สงวนลิขสิทธิ์ทุกประการ.</p>
             </div>
         </div>
     </footer>
@@ -759,11 +761,13 @@
             
             let html = '';
             cart.forEach(item => {
+                const itemPrice = Number(item.price);
+                const itemQuantity = Number(item.quantity);
                 html += `
                     <div class="summary-item">
                         <div class="summary-item-name">${item.name}</div>
-                        <div class="summary-item-qty">x${item.quantity}</div>
-                        <div class="summary-item-price">${formatCurrency(item.price * item.quantity)}</div>
+                        <div class="summary-item-qty">x${itemQuantity}</div>
+                        <div class="summary-item-price">${formatCurrency(itemPrice * itemQuantity)}</div>
                     </div>
                 `;
             });
@@ -775,7 +779,7 @@
         // Update order total
         function updateOrderTotal() {
             const cart = getCart();
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const subtotal = cart.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
             
             // Get selected shipping cost
             const shippingValue = document.querySelector('input[name="shipping"]:checked').value;

@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopHub - ร้านค้าออนไลน์</title>
+    <title>JaiShopHub - ร้านค้าออนไลน์</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
     
     <style>
         * {
@@ -370,7 +372,7 @@
     <!-- ===== BANNER ===== -->
     <section class="banner" id="home">
         <div class="banner-content">
-            <h1>ยินดีต้อนรับสู่ ShopHub</h1>
+            <h1>ยินดีต้อนรับสู่ JaiShopHub</h1>
             <p>เพลิดเพลินกับการช้อปปิ้งที่สะดวกสบายและราคาที่ดีที่สุด</p>
             <a href="#products" class="btn-shop">ช้อปเลย <i class="fas fa-arrow-right ms-2"></i></a>
         </div>
@@ -403,7 +405,7 @@
                             <div class="product-info">
                                 <h5 class="product-name">{{ product.name }}</h5>
                                 <div class="product-price">฿{{ '%.2f'|format(product.price) }}</div>
-                                <button class="btn-add-cart">
+                                <button class="btn-add-cart" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}" data-product-image="{{ product.image_url or '' }}">
                                     <i class="fas fa-shopping-cart me-2"></i>เพิ่มลงตะกร้า
                                 </button>
                             </div>
@@ -425,7 +427,7 @@
             <div class="footer-content">
                 <!-- About Company -->
                 <div class="footer-column">
-                    <h4><i class="fas fa-shopping-bag me-2"></i>ShopHub</h4>
+                    <h4><i class="fas fa-shopping-bag me-2"></i>JaiShopHub</h4>
                     <p>ร้านค้าออนไลน์อันดับ 1 สำหรับผู้ที่ชื่นชอบเทคโนโลยี เราให้บริการสินค้าคุณภาพ ราคาแข่งขันได้</p>
                     <div class="social-links">
                         <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -461,7 +463,7 @@
                         </li>
                         <li>
                             <i class="fas fa-envelope me-2"></i>
-                            <a href="mailto:info@shophub.com">info@shophub.com</a>
+                            <a href="mailto:info@jaishophub.com">info@jaishophub.com</a>
                         </li>
                         <li>
                             <i class="fas fa-clock me-2"></i>
@@ -484,7 +486,7 @@
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2026 ShopHub. สงวนลิขสิทธิ์ทุกประการ. ออกแบบและพัฒนาโดย ShopHub Team</p>
+                <p>&copy; 2026 JaiShopHub. สงวนลิขสิทธิ์ทุกประการ. ออกแบบและพัฒนาโดย JaiShopHub Team</p>
             </div>
         </div>
     </footer>
@@ -507,7 +509,7 @@
         // Update cart badge
         function updateCartBadge() {
             const cart = getCart();
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalItems = cart.reduce((sum, item) => sum + Number(item.quantity), 0);
             const badge = document.querySelector('.cart-badge');
             if (badge) {
                 badge.textContent = totalItems;
@@ -516,47 +518,78 @@
 
         // Add item to cart
         function addToCart(productId, productName, productPrice, productImageUrl) {
+            // Validate product ID
+            if (!productId || isNaN(productId)) {
+                console.error('Invalid product ID:', productId);
+                showNotification('เกิดข้อผิดพลาด: ไม่สามารถเพิ่มสินค้า');
+                return;
+            }
+            
             let cart = getCart();
             
-            // Check if product already exists in cart
-            const existingItem = cart.find(item => item.id === productId);
+            // Normalize ID and price to ensure consistent types
+            const numericId = Number(productId);
+            const numericPrice = Number(productPrice);
+            
+            // Check if product already exists in cart (flexible comparison)
+            const existingItem = cart.find(item => Number(item.id) === numericId);
             
             if (existingItem) {
                 existingItem.quantity += 1;
+                showNotification(`เพิ่มเติม ${productName} (จำนวน: ${existingItem.quantity})`);
             } else {
                 cart.push({
-                    id: productId,
+                    id: numericId,
                     name: productName,
-                    price: productPrice,
+                    price: numericPrice,
                     image_url: productImageUrl || '',
                     quantity: 1
                 });
+                showNotification(`เพิ่ม ${productName} ลงตะกร้าสำเร็จ!`);
             }
             
             saveCart(cart);
             updateCartBadge();
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'cart-notification';
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+                z-index: 9999;
+                animation: slideInRight 0.4s ease-out;
+                font-weight: 500;
+            `;
+            document.body.appendChild(notification);
             
-            // Show success message
-            alert('เพิ่มสินค้าลงในตะกร้าสำเร็จ!');
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.4s ease-in';
+                setTimeout(() => notification.remove(), 400);
+            }, 2500);
         }
 
         // Initialize: Attach click handlers to all "Add to cart" buttons
         document.addEventListener('DOMContentLoaded', function() {
             const addToCartButtons = document.querySelectorAll('.btn-add-cart');
-            addToCartButtons.forEach((button, index) => {
+            addToCartButtons.forEach((button) => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // Get product info from the card
-                    const productCard = button.closest('.product-card');
-                    const productName = productCard.querySelector('.product-name').textContent;
-                    const productPriceText = productCard.querySelector('.product-price').textContent.replace('฿', '').trim();
-                    const productPrice = parseFloat(productPriceText);
-                    
-                    // Use index as product ID since we're on the front-end
-                    // In a production app, you'd get this from data attributes
-                    const productId = index + 1;
-                    const productImageUrl = '';
+                    // Get product info from data attributes
+                    const productId = parseInt(this.getAttribute('data-product-id'));
+                    const productName = this.getAttribute('data-product-name');
+                    const productPrice = parseFloat(this.getAttribute('data-product-price'));
+                    const productImageUrl = this.getAttribute('data-product-image');
                     
                     addToCart(productId, productName, productPrice, productImageUrl);
                 });

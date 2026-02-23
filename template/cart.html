@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ตะกร้าสินค้า - ShopHub</title>
+    <title>ตะกร้าสินค้า - JaiShopHub</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
     
     <style>
         * {
@@ -413,7 +415,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('index') }}">
                 <i class="fas fa-shopping-bag"></i>
-                ShopHub
+                JaiShopHub
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -570,20 +572,24 @@
             }
 
             let html = '';
-            cart.forEach(item => {
-                const subtotal = item.price * item.quantity;
+            cart.forEach((item, index) => {
+                // Ensure numeric types for calculations
+                const itemPrice = Number(item.price);
+                const itemQuantity = Number(item.quantity);
+                const subtotal = itemPrice * itemQuantity;
+                
                 html += `
-                    <div class="cart-item">
+                    <div class="cart-item" style="animation: fadeIn 0.4s ease-out ${index * 0.05}s;">
                         <div class="cart-item-image">
                             ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}">` : '<i class="fas fa-box"></i>'}
                         </div>
                         <div class="cart-item-details">
                             <div class="cart-item-name">${item.name}</div>
                             <div class="cart-item-id">รหัส: #${item.id}</div>
-                            <div class="cart-item-price">฿${item.price.toFixed(2)}</div>
+                            <div class="cart-item-price">฿${itemPrice.toFixed(2)}</div>
                             <div class="cart-item-quantity">
                                 <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">−</button>
-                                <input type="number" class="qty-input" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, 0, this.value)">
+                                <input type="number" class="qty-input" value="${itemQuantity}" min="1" onchange="updateQuantity(${item.id}, 0, this.value)">
                                 <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
                             </div>
                         </div>
@@ -601,30 +607,44 @@
         }
 
         function updateQuantity(id, change, newValue) {
-            const item = cart.find(i => i.id === id);
+            // Ensure id is numeric for consistent comparison
+            const numericId = Number(id);
+            const item = cart.find(i => Number(i.id) === numericId);
             if (item) {
                 if (newValue !== undefined) {
-                    item.quantity = parseInt(newValue) || 1;
+                    const parsedValue = parseInt(newValue) || 1;
+                    if (parsedValue < 1) {
+                        item.quantity = 1;
+                    } else {
+                        item.quantity = parsedValue;
+                    }
                 } else {
                     item.quantity += change;
                     if (item.quantity < 1) item.quantity = 1;
                 }
                 saveCart(cart);
                 renderCart();
+                showCartNotification(`อัพเดต ${item.name} - จำนวน: ${item.quantity}`);
             }
         }
 
         function removeItem(id) {
-            const index = cart.findIndex(i => i.id === id);
-            if (index > -1) {
-                cart.splice(index, 1);
-                saveCart(cart);
-                renderCart();
+            // Ensure id is numeric for consistent comparison
+            const numericId = Number(id);
+            const item = cart.find(i => Number(i.id) === numericId);
+            if (item && confirm(`คุณต้องการลบ ${item.name} ออกจากตะกร้าหรือไม่?`)) {
+                const index = cart.findIndex(i => Number(i.id) === numericId);
+                if (index > -1) {
+                    const removedItem = cart.splice(index, 1)[0];
+                    saveCart(cart);
+                    renderCart();
+                    showCartNotification(`ลบ ${removedItem.name} ออกจากตะกร้าแล้ว`);
+                }
             }
         }
 
         function updateSummary() {
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const subtotal = cart.reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
             const shipping = subtotal > 0 ? 50 : 0;
             const tax = subtotal * 0.07;
             const total = subtotal + shipping + tax;
@@ -643,6 +663,32 @@
                 return false;
             }
             return true;
+        }
+
+        // Show notification
+        function showCartNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'cart-notification';
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+                z-index: 9999;
+                animation: slideInRight 0.4s ease-out;
+                font-weight: 500;
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.4s ease-in';
+                setTimeout(() => notification.remove(), 400);
+            }, 2500);
         }
 
         // Update customer navigation based on login status
