@@ -20,7 +20,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0a1428 0%, #1a3a52 50%, #0d2948 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -36,8 +36,16 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1"/></pattern></defs><rect width="1200" height="600" fill="url(%23grid)"/></svg>');
-            opacity: 0.5;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 255, 0.03) 2px, rgba(0, 255, 255, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 255, 255, 0.03) 2px, rgba(0, 255, 255, 0.03) 4px);
+            opacity: 0.1;
+            animation: circuit-flow 20s linear infinite;
+        }
+
+        @keyframes circuit-flow {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(20px); }
         }
 
         .login-container {
@@ -95,6 +103,7 @@
 
         .login-body {
             padding: 40px;
+            background: linear-gradient(135deg, #0a1428 0%, #1a3a52 100%);
         }
 
         .form-group {
@@ -103,7 +112,7 @@
 
         .form-group label {
             font-weight: 600;
-            color: #333;
+            color: #00ffff;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -111,41 +120,44 @@
         }
 
         .form-group label i {
-            color: #667eea;
+            color: #00ff88;
             font-size: 1.1rem;
         }
 
         .form-control {
-            border: 2px solid #e0e0e0;
+            border: 2px solid rgba(0, 255, 255, 0.2);
             border-radius: 10px;
             padding: 12px 15px;
             font-size: 1rem;
             transition: all 0.3s ease;
-            background-color: #f9f9f9;
-        }
-
-        .form-control:focus {
-            border-color: #667eea;
-            background-color: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background-color: rgba(15, 30, 50, 0.8);
+            color: white;
         }
 
         .form-control::placeholder {
-            color: #999;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-control:focus {
+            border-color: #00ffff;
+            background-color: rgba(15, 30, 50, 0.95);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            color: white;
         }
 
         .btn-login {
             width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #00ffff 0%, #00ff88 100%);
+            color: #0a1428;
             border: none;
             padding: 13px;
             border-radius: 10px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 1.05rem;
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
         }
 
         .btn-login:hover {

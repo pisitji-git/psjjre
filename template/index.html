@@ -29,14 +29,14 @@
 
         /* ===== NAVBAR ===== */
         .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #00ffff 0%, #00ff88 100%) !important;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
         }
 
         .navbar-brand {
             font-weight: bold;
             font-size: 1.8rem;
-            color: white !important;
+            color: #0a1428 !important;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -47,27 +47,276 @@
         }
 
         .nav-link {
-            color: rgba(255, 255, 255, 0.9) !important;
-            font-weight: 500;
+            color: #0a1428 !important;
+            font-weight: 600;
             margin: 0 10px;
             transition: all 0.3s ease;
         }
 
         .nav-link:hover {
-            color: white !important;
+            color: #0a1428 !important;
             transform: translateY(-2px);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         }
 
         .cart-badge {
-            background-color: #ff6b6b;
+            background: linear-gradient(135deg, #ff00ff 0%, #ff0088 100%);
             color: white;
             border-radius: 50%;
             padding: 2px 8px;
             font-size: 0.75rem;
             margin-left: -8px;
+            box-shadow: 0 0 10px rgba(255, 0, 136, 0.6);
+            font-weight: 700;
         }
 
-        /* ===== BANNER (Refined / Elegant) ===== */
+        /* ===== BANNER - TECH COMPUTER SHOP ===== */
+        .banner-tech {
+            min-height: 620px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 60px 20px;
+        }
+
+        /* Tech Background */
+        .banner-tech-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #0a1428 0%, #1a3a52 50%, #0d2948 100%);
+            z-index: 0;
+        }
+
+        /* Circuit Lines Animation */
+        .banner-circuit-lines {
+            position: absolute;
+            inset: 0;
+            opacity: 0.15;
+            z-index: 1;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 255, 0.03) 2px, rgba(0, 255, 255, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 255, 255, 0.03) 2px, rgba(0, 255, 255, 0.03) 4px);
+            animation: circuit-flow 20s linear infinite;
+        }
+
+        @keyframes circuit-flow {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(20px); }
+        }
+
+        /* Banner Content */
+        .banner-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            width: 100%;
+            color: white;
+        }
+
+        /* Tech Header Icons */
+        .banner-tech-header {
+            position: relative;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0.6;
+        }
+
+        .tech-icons-left, .tech-icons-right {
+            display: flex;
+            gap: 20px;
+            font-size: 2.5rem;
+        }
+
+        .tech-icons-left i {
+            animation: float-left 4s ease-in-out infinite;
+            color: #00ffff;
+        }
+
+        .tech-icons-right i {
+            animation: float-right 4s ease-in-out infinite;
+            color: #ff00ff;
+        }
+
+        @keyframes float-left {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(-10px) translateY(-10px); }
+        }
+
+        @keyframes float-right {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(10px) translateY(-10px); }
+        }
+
+        /* Tech Product Image */
+        .tech-product-img {
+            width: 100%;
+            height: auto;
+            max-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .tech-product-img:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 0 60px rgba(0, 255, 255, 0.6);
+            border-color: rgba(0, 255, 255, 0.6);
+        }
+
+        .tech-product-placeholder {
+            width: 100%;
+            max-width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
+            border: 2px dashed rgba(0, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: rgba(0, 255, 255, 0.5);
+        }
+
+        /* Tech Titles */
+        .banner-tech-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #00ffff 0%, #00ff88 50%, #ffff00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            letter-spacing: -1px;
+        }
+
+        .banner-tech-desc {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 15px 0 20px 0;
+            line-height: 1.6;
+        }
+
+        .banner-tech-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.8;
+        }
+
+        .text-tech-cyber {
+            background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Badge Styling */
+        .badge-tech {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2) 0%, rgba(255, 0, 255, 0.2) 100%);
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            color: #00ffff;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+        .badge-discount {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);
+            color: white;
+            margin-left: 10px;
+            font-weight: 700;
+        }
+
+        /* Price Section */
+        .banner-price-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .banner-price {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Tech Buttons */
+        .btn-tech-primary {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #00ffff 0%, #00ff88 100%);
+            color: #0a1428;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn-tech-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.6);
+            background: linear-gradient(135deg, #00ff88 0%, #00ffff 100%);
+            color: #0a1428;
+            text-decoration: none;
+        }
+
+        .btn-tech-secondary {
+            display: inline-block;
+            padding: 14px 32px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #00ffff;
+            font-weight: 700;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn-tech-secondary:hover {
+            background: rgba(0, 255, 255, 0.1);
+            border-color: rgba(0, 255, 255, 0.6);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            color: #00ffff;
+            text-decoration: none;
+            transform: translateY(-3px);
+        }
+
+        /* Features */
+        .banner-features {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .feature-item i {
+            font-size: 1.8rem;
+            color: #00ffff;
+        }
+
+        /* ===== BANNER (Original - Keep for backwards compat) ===== */
         .banner {
             min-height: 520px;
             background-size: cover;
@@ -83,7 +332,6 @@
             background-blend-mode: overlay;
         }
 
-        /* soft dark overlay for contrast */
         .banner::before {
             content: '';
             position: absolute;
@@ -92,7 +340,6 @@
             z-index: 1;
         }
 
-        /* subtle moving shimmer to add life */
         .banner::after {
             content: '';
             position: absolute;
@@ -458,38 +705,78 @@
         {%- set bg_url = 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=1600&q=80&auto=format&fit=crop' -%}
     {%- endif -%}
 
-    <section class="banner" id="home" style="background-image: url('{{ bg_url }}');">
+    <section class="banner banner-tech" id="home">
+        <div class="banner-tech-bg"></div>
+        <div class="banner-circuit-lines"></div>
         <div class="banner-content text-start text-white">
+            <div class="banner-tech-header mb-4">
+                <div class="tech-icons-left">
+                    <i class="fas fa-microchip"></i>
+                    <i class="fas fa-server"></i>
+                </div>
+                <div class="tech-icons-right">
+                    <i class="fas fa-laptop"></i>
+                    <i class="fas fa-keyboard"></i>
+                </div>
+            </div>
+
             {% if featured %}
-                <div class="d-flex align-items-center gap-3">
-                    <div style="width:140px;flex:0 0 140px;">
+                <div class="d-flex align-items-center gap-4 flex-wrap">
+                    <div style="flex:0 0 200px;">
                         {% if featured.image_url %}
                             {% if featured.image_url.startswith('http') %}
-                                <img src="{{ featured.image_url }}" alt="{{ featured.name }}" style="width:140px;height:100px;object-fit:cover;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.45)">
+                                <img src="{{ featured.image_url }}" alt="{{ featured.name }}" class="tech-product-img">
                             {% else %}
-                                <img src="{{ url_for('static', filename=featured.image_url) }}" alt="{{ featured.name }}" style="width:140px;height:100px;object-fit:cover;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.45)">
+                                <img src="{{ url_for('static', filename=featured.image_url) }}" alt="{{ featured.name }}" class="tech-product-img">
                             {% endif %}
                         {% else %}
-                            <div style="width:140px;height:100px;border-radius:8px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.45)">
-                                <i class="fas fa-box fa-2x"></i>
+                            <div class="tech-product-placeholder">
+                                <i class="fas fa-microchip"></i>
                             </div>
                         {% endif %}
                     </div>
-                    <div>
-                        <h1 style="font-size:2.4rem;margin:0">{{ featured.name }}</h1>
-                        <p style="font-size:1.1rem;margin:6px 0 12px;">ราคาพิเศษ ฿{{ '%.2f'|format(featured.price) }}</p>
+                    <div class="flex-grow-1">
+                        <span class="badge badge-tech mb-3"><i class="fas fa-star me-2"></i>Featured Product</span>
+                        <h1 class="banner-tech-title">{{ featured.name }}</h1>
+                        <p class="banner-tech-desc">อุปกรณ์คอมพิวเตอร์คุณภาพสูง ราคาพิเศษสำหรับสาขาชาววัง</p>
+                        <div class="banner-price-section mb-4">
+                            <span class="banner-price">฿{{ '%.2f'|format(featured.price) }}</span>
+                            <span class="badge badge-discount">Save 20%</span>
+                        </div>
                         <div>
-                            <button class="btn-shop" data-product-id="{{ featured.id }}" data-product-name="{{ featured.name }}" data-product-price="{{ '%.2f'|format(featured.price) }}" data-product-image="{{ featured.image_url or '' }}" onclick="addToCart(this.dataset.productId, this.dataset.productName, this.dataset.productPrice, this.dataset.productImage)">ซื้อเลย <i class="fas fa-shopping-cart ms-2"></i></button>
-                            <a href="#products" class="btn btn-secondary">ดูสินค้าเพิ่มเติม</a>
+                            <button class="btn-tech-primary me-2" data-product-id="{{ featured.id }}" data-product-name="{{ featured.name }}" data-product-price="{{ '%.2f'|format(featured.price) }}" data-product-image="{{ featured.image_url or '' }}" onclick="addToCart(this.dataset.productId, this.dataset.productName, this.dataset.productPrice, this.dataset.productImage)">
+                                <i class="fas fa-shopping-cart me-2"></i>เพิ่มลงตะกร้า
+                            </button>
+                            <a href="#products" class="btn-tech-secondary">ดูสินค้าทั้งหมด</a>
                         </div>
                     </div>
                 </div>
             {% else %}
-                <h1>ยินดีต้อนรับสู่ JaiShopHub</h1>
-                <p>เพลิดเพลินกับการช้อปปิ้งที่สะดวกสบายและราคาที่ดีที่สุด</p>
-                <div class="d-flex justify-content-center mt-3">
-                    <a href="#products" class="btn btn-shop">ช้อปเลย <i class="fas fa-arrow-right ms-2"></i></a>
-                    <a href="#products" class="btn btn-secondary">ดูสินค้าแนะนำ</a>
+                <h1 class="banner-tech-title mb-3">ยินดีต้อนรับสู่ <span class="text-tech-cyber">TechHub</span></h1>
+                <p class="banner-tech-subtitle mb-5">ร้านค้าอุปกรณ์คอมพิวเตอร์ชั้นนำกับราคาที่ยุติธรรม</p>
+                <div class="banner-features mb-5">
+                    <div class="feature-item">
+                        <i class="fas fa-bolt-lightning"></i>
+                        <span>ราคาเหมาะสม</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-truck"></i>
+                        <span>ส่งฟรี</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-check"></i>
+                        <span>รับประกันแท้</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-headset"></i>
+                        <span>ฝ่ายสนับสนุน</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="#products" class="btn-tech-primary">
+                        <i class="fas fa-arrow-right me-2"></i>เริ่มช้อปปิ้ง
+                    </a>
+                    <a href="#products" class="btn-tech-secondary">ดูสินค้าแนะนำ</a>
                 </div>
             {% endif %}
         </div>
