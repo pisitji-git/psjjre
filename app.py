@@ -55,7 +55,7 @@ def seed_db():
         count = Product.query.count()
         if count == 0:
             samples = [
-                Product(name='สินค้า A', price=790.00, image_url=''),
+                Product(name='Headset / สินค้า A', price=5000.00, image_url='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80'),
                 Product(name='สินค้า B', price=1290.00, image_url=''),
                 Product(name='สินค้า C', price=450.00, image_url=''),
                 Product(name='สินค้า D', price=1990.00, image_url=''),
