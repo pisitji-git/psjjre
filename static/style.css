@@ -6,22 +6,22 @@
 :root {
     --primary-color: #2563eb;
     --primary-light: #3b82f6;
-    --secondary-color: #dc2626;
-    --success-color: #10b981;
-    --warning-color: #f59e0b;
-    --danger-color: #dc2626;
+    --secondary-color: #1e40af;
+    --success-color: #0ea5e9;
+    --warning-color: #0284c7;
+    --danger-color: #1d4ed8;
     --info-color: #2563eb;
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.8);
-    --text-dark: #1f2937;
-    --bg-light: #f9fafb;
-    --bg-white: #ffffff;
-    --bg-dark: #1f2937;
-    --box-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
-    --box-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --box-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+    --text-dark: #001f3f;
+    --bg-light: #eff6ff;
+    --bg-white: #f0f9ff;
+    --bg-dark: #0c3b66;
+    --box-shadow-sm: 0 1px 3px rgba(37, 99, 235, 0.1);
+    --box-shadow-md: 0 4px 6px rgba(37, 99, 235, 0.15);
+    --box-shadow-lg: 0 10px 15px rgba(37, 99, 235, 0.2);
     --transition: all 0.2s ease;
-    --border-color: #e5e7eb;
+    --border-color: #bfdbfe;
 }
 
 /* GLOBAL STYLES */

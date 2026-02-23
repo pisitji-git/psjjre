@@ -20,7 +20,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a1428 0%, #1a3a52 50%, #0d2948 100%);
+            background: linear-gradient(135deg, #0c3b66 0%, #1e63b8 50%, #2563eb 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -37,8 +37,8 @@
             right: 0;
             bottom: 0;
             background-image: 
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 255, 0.03) 2px, rgba(0, 255, 255, 0.03) 4px),
-                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 255, 255, 0.03) 2px, rgba(0, 255, 255, 0.03) 4px);
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(37, 99, 235, 0.05) 2px, rgba(37, 99, 235, 0.05) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(37, 99, 235, 0.05) 2px, rgba(37, 99, 235, 0.05) 4px);
             opacity: 0.1;
             animation: circuit-flow 20s linear infinite;
         }
@@ -75,7 +75,7 @@
         }
 
         .login-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
             color: white;
             padding: 40px;
             text-align: center;
@@ -103,7 +103,7 @@
 
         .login-body {
             padding: 40px;
-            background: linear-gradient(135deg, #0a1428 0%, #1a3a52 100%);
+            background: linear-gradient(135deg, #f0f9ff 0%, #eff6ff 100%);
         }
 
         .form-group {
@@ -112,7 +112,7 @@
 
         .form-group label {
             font-weight: 600;
-            color: #00ffff;
+            color: #1e40af;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -120,35 +120,35 @@
         }
 
         .form-group label i {
-            color: #00ff88;
+            color: #2563eb;
             font-size: 1.1rem;
         }
 
         .form-control {
-            border: 2px solid rgba(0, 255, 255, 0.2);
+            border: 2px solid rgba(37, 99, 235, 0.3);
             border-radius: 10px;
             padding: 12px 15px;
             font-size: 1rem;
             transition: all 0.3s ease;
-            background-color: rgba(15, 30, 50, 0.8);
-            color: white;
+            background-color: rgba(240, 249, 255, 0.8);
+            color: #001f3f;
         }
 
         .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(0, 31, 63, 0.4);
         }
 
         .form-control:focus {
-            border-color: #00ffff;
-            background-color: rgba(15, 30, 50, 0.95);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-            color: white;
+            border-color: #2563eb;
+            background-color: rgba(240, 249, 255, 0.95);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
+            color: #001f3f;
         }
 
         .btn-login {
             width: 100%;
-            background: linear-gradient(135deg, #00ffff 0%, #00ff88 100%);
-            color: #0a1428;
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            color: white;
             border: none;
             padding: 13px;
             border-radius: 10px;
@@ -157,12 +157,12 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 10px;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
         }
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
             color: white;
             text-decoration: none;
         }
@@ -185,8 +185,8 @@
         }
 
         .alert-danger {
-            background-color: #ffe0e0;
-            color: #c00;
+            background-color: #dbeafe;
+            color: #0c3b66;
         }
 
         .alert i {
@@ -196,32 +196,32 @@
         .login-footer {
             text-align: center;
             padding: 20px 40px;
-            background-color: #f9f9f9;
-            border-top: 1px solid #e0e0e0;
+            background-color: #dbeafe;
+            border-top: 1px solid #bfdbfe;
         }
 
         .login-footer p {
-            color: #666;
+            color: #0c3b66;
             margin: 0;
             font-size: 0.95rem;
         }
 
         .login-footer a {
-            color: #667eea;
+            color: #2563eb;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
         }
 
         .login-footer a:hover {
-            color: #764ba2;
+            color: #1e40af;
             text-decoration: underline;
         }
 
         /* Demo Credentials Display */
         .demo-credentials {
-            background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
-            border-left: 4px solid #667eea;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 100%);
+            border-left: 4px solid #2563eb;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -229,15 +229,15 @@
         }
 
         .demo-credentials strong {
-            color: #333;
+            color: #0c3b66;
         }
 
         .demo-credentials code {
-            background: white;
+            background: #f0f9ff;
             padding: 2px 6px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
-            color: #667eea;
+            color: #2563eb;
         }
 
         @media (max-width: 576px) {
